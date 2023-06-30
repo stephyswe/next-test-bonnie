@@ -28,6 +28,7 @@ export async function getStaticProps({
 
 export async function getStaticPaths() {
   const bands = await getBands();
+  console.log("bands", bands);
 
   const paths = bands.map((band) => ({
     params: { bandId: band.id.toString() },

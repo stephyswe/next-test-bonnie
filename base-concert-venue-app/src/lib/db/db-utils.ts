@@ -1,5 +1,3 @@
-import "server-only";
-
 /* eslint-disable no-param-reassign */
 // NOTE: in production this would connect to a database,
 // not JSON files. However, I didn't want to make you install
