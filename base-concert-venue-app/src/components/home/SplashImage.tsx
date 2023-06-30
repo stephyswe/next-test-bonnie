@@ -16,8 +16,7 @@ export function SplashImage(): ReactElement {
       <Image
         alt="Concert goer with hands in the shape of a heart"
         src="/splash/heart-hands.jpg"
-        layout="fill"
-        objectFit="cover"
+        fill
         quality={100}
       />
     </Box>
