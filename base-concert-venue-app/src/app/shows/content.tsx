@@ -1,23 +1,23 @@
+"use client";
+
 import {
-  Box,
-  Button,
+  Stack,
   Heading,
   List,
   ListItem,
-  Stack,
+  Box,
+  Button,
   Text,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
-import React from "react";
-import useSWR from "swr";
+import router from "next/router";
 
 import { LoadingSpinner } from "@/components/_common/LoadingSpinner";
 import { BandLinkHeading } from "@/components/bands/BandLinkHeading";
+import { formatDate } from "@/lib/features/shows/utils";
+import { Show } from "@/lib/features/shows/types";
+import useSWR from "swr";
 import { axiosInstance } from "@/lib/axios/axiosInstance";
 import { routes } from "@/lib/axios/routes";
-import { getShows as getShowsViaDbQuery } from "@/lib/features/shows/queries";
-import type { Show } from "@/lib/features/shows/types";
-import { formatDate } from "@/lib/features/shows/utils";
 
 const THIRTY_SECONDS = 30 * 1000;
 
@@ -26,29 +26,11 @@ const getShowsViaAPI = async () => {
   return data.shows;
 };
 
-// ISR reference
-// https://nextjs.org/docs/basic-features/data-fetching/incremental-static-regeneration
-
-// SWR + ISR reference:
-// https://www.smashingmagazine.com/2021/09/useswr-react-hook-library-incremental-static-regeneration-nextjs/
-
-export async function getStaticProps() {
-  // can't use getShows here because getStaticProps runs while building;
-  // Server isn't running while building!
-  const isrShows = await getShowsViaDbQuery();
-
-  return {
-    props: { isrShows },
-  };
+interface ShowsContentPageProps {
+  isrShows: Array<Show>;
 }
 
-export default function Shows({
-  isrShows,
-}: {
-  isrShows: Array<Show>;
-}): React.ReactElement {
-  const router = useRouter();
-
+export default function ShowsContentPage({ isrShows }: ShowsContentPageProps) {
   const { data: shows, isValidating } = useSWR<Array<Show>>(
     "/api/shows",
     getShowsViaAPI,

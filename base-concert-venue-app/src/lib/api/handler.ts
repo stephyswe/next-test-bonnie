@@ -1,5 +1,5 @@
-import type { NextApiRequest, NextApiResponse } from "next";
-import nextConnect from "next-connect";
+import { NextFetchEvent, NextRequest, NextResponse } from "next/server";
+import { createEdgeRouter } from "next-connect";
 
 import { validateToken } from "@/lib/auth/utils";
 
@@ -9,19 +9,20 @@ import { processApiError } from "./utils";
 export const createHandler = ({
   authRequired,
 }: { authRequired?: boolean } = {}) => {
-  const handler = nextConnect({
-    onError(error, req: NextApiRequest, res: NextApiResponse) {
+  const handler = createEdgeRouter<NextRequest, NextFetchEvent>();
+  handler.handler({
+    onError(error, req, res) {
       const { status, message } = processApiError(error);
-      res.status(status).json({ message });
+      NextResponse.json( { message },{ status });
     },
-    onNoMatch(req: NextApiRequest, res: NextApiResponse) {
-      res.status(405).end(`Method ${req.method} Not Allowed`);
+    onNoMatch(req, res) {
+      NextResponse.json(`Method ${req.method} Not Allowed`);
     },
   });
   if (authRequired) {
     handler.use(async (req, res, next) => {
-      const tokenIsValid = await validateToken(req);
-      if (!tokenIsValid) return res.status(401).end();
+      const tokenIsValid = await validateToken(req, req.nextUrl.searchParams.get("userId"));
+      if (!tokenIsValid) return NextResponse.json({status: 401});
       return next();
     });
   }
