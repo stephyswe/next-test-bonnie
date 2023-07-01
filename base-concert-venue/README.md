@@ -16,3 +16,32 @@
 ## Running the App
 
 Run `npm run dev`. The app will be found at [http://localhost:3000]
+
+## Lesson 30. Setting up MSW with Next.js
+
+npm i msw --save-dev
+
+Create __tests__/__mocks__/msw/handlers.ts
+import { rest } from "msw";
+
+export const handlers = [];
+
+Create __tests__/__mocks__/msw/server.ts
+import { setupServer } from "msw/node";
+import { handlers } from "./handlers";
+
+// This configures a request mocking server with the given request handlers.
+export const server = setupServer(...handlers);
+
+Edit jest.setup.ts
+import { server } from "./__tests__/__mocks__/msw/server";
+
+// Establish API mocking before all tests.
+beforeAll(() => server.listen());
+
+// Reset any request handlers that we may add during the tests,
+// so they don't affect other tests.
+afterEach(() => server.resetHandlers());
+
+// Clean up after the tests are finished.
+afterAll(() => server.close());
