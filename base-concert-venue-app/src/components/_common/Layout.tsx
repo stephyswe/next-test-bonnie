@@ -1,12 +1,15 @@
 "use client";
 
 import { Box } from "@chakra-ui/react";
-import React from "react";
 
 import { NavBar } from "../nav/Nav";
 import { LoadingSpinner } from "./LoadingSpinner";
 
-export const Layout: React.FC = ({ children }) => (
+interface LayoutProps {
+  children: React.ReactNode;
+}
+
+export const Layout: React.FC<LayoutProps> = ({ children }) => (
   <Box h="100vh" w="100vw">
     <Box zIndex={50} w="100vw">
       <NavBar />
