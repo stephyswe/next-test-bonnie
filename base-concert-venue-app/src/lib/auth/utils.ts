@@ -3,14 +3,13 @@ import { getToken } from "next-auth/jwt";
 
 import { User } from "../features/users/types";
 
-export const validateToken = async (req: NextRequest, paramsUserId: any) => {
+export const validateToken = async (req: NextRequest) => {
   const token = await getToken({ req });
   if (!token) return false;
 
-  const { requestId } = await req.json(); // To read request data
-  const queryParamsId = paramsUserId; // To read query params
-  const userId = requestId ?? queryParamsId;
-
+  const { userId: bodyUserId } = await req.json();
+  const paramsUserId = req.nextUrl.searchParams.get("userId");
+  const userId = bodyUserId ?? paramsUserId;
   if (!userId) return false;
 
   const tokenUser = token.user as User;

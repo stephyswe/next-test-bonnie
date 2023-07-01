@@ -10,7 +10,7 @@ import {
   Input,
   Stack,
 } from "@chakra-ui/react";
-import { useRouter } from "next/router";
+import { useRouter, useSearchParams } from "next/navigation";
 import { signIn } from "next-auth/react";
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -29,10 +29,16 @@ export interface SignInDetails {
   password: string;
 }
 
-export default function SignIn() {
+export default async function SignIn() {
+  const params = useSearchParams();
+  const callbackUrl = params.get("callbackUrl");
+  // remove the http://localhost:3000 from the callbackUrl
+  console.log("callbackUrl", callbackUrl);
+
   const router = useRouter();
+
   const [authError, setAuthError] = useState<string | null>(null);
-  const { callbackUrl } = router.query;
+  /*
   const {
     register,
     handleSubmit,
@@ -61,7 +67,7 @@ export default function SignIn() {
         if (error) setAuthError(error);
       }
     )
-  );
+  ); */
 
   return (
     <Flex minH="84vh" align="center" justify="center">
@@ -78,7 +84,7 @@ export default function SignIn() {
           alignSelf="center"
           spacing={4}
         >
-          <form data-testid="sign-in-form">
+          {/* <form data-testid="sign-in-form">
             {formFields.map((field) => (
               <FormControl key={field.name} id={field.name} isRequired>
                 <FormLabel>{field.display}</FormLabel>
@@ -111,7 +117,7 @@ export default function SignIn() {
                 <LoadingSpinner display={isLoading} /> Sign in
               </Button>
             </Flex>
-          </form>
+          </form> */}
         </Stack>
         {authError ? <SignInError error="Sign in failed" /> : null}
       </Stack>

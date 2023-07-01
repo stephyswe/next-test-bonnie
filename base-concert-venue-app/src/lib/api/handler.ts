@@ -13,7 +13,7 @@ export const createHandler = ({
   handler.handler({
     onError(error, req, res) {
       const { status, message } = processApiError(error);
-      NextResponse.json( { message },{ status });
+      NextResponse.json({ message }, { status });
     },
     onNoMatch(req, res) {
       NextResponse.json(`Method ${req.method} Not Allowed`);
@@ -21,8 +21,8 @@ export const createHandler = ({
   });
   if (authRequired) {
     handler.use(async (req, res, next) => {
-      const tokenIsValid = await validateToken(req, req.nextUrl.searchParams.get("userId"));
-      if (!tokenIsValid) return NextResponse.json({status: 401});
+      const tokenIsValid = await validateToken(req);
+      if (!tokenIsValid) return NextResponse.json({ status: 401 });
       return next();
     });
   }

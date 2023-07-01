@@ -1,11 +1,15 @@
-import { useRouter } from "next/router";
-import React from "react";
+"use client";
 
+import { useRouter } from "next/navigation";
 import { Reservation } from "@/components/reservations/Reservation";
 
-export default function Reservations() {
+interface IParams {
+  reservationId?: string;
+}
+
+export default function ReservationPageId({ params }: { params: IParams }) {
   const router = useRouter();
-  const { showId } = router.query;
+  const { reservationId: showId } = params;
 
   const submitPurchase = ({
     reservationId,
@@ -25,4 +29,4 @@ export default function Reservations() {
   );
 }
 
-Reservations.auth = true;
+ReservationPageId.auth = true;

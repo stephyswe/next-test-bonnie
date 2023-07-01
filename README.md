@@ -38,3 +38,6 @@ from
     objectFit="cover"
     quality={100}
  />
+
+
+in app dir we use next/navigation regardless client comps or server comps
