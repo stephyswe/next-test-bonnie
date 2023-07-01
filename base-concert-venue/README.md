@@ -45,3 +45,19 @@ afterEach(() => server.resetHandlers());
 
 // Clean up after the tests are finished.
 afterAll(() => server.close());
+
+## Lesson 31. Adding a MSW Handler
+
+Auto-fill if go to /shows/ route
+bandData.ts - lib/db/data/bandData.ts
+
+generateBands() - in generateData()
+
+api/shows.index.js isnt working in app. fix.
+
+
+event - compiled client and server successfully in 131 ms (791 modules)
+        Generating data...
+                Generating bands...
+                Generating shows...
+
