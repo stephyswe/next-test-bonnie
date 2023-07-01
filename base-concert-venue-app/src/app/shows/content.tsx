@@ -9,7 +9,7 @@ import {
   Button,
   Text,
 } from "@chakra-ui/react";
-import router from "next/router";
+import { useRouter } from "next/navigation";
 
 import { LoadingSpinner } from "@/components/_common/LoadingSpinner";
 import { BandLinkHeading } from "@/components/bands/BandLinkHeading";
@@ -31,6 +31,7 @@ interface ShowsContentPageProps {
 }
 
 export default function ShowsContentPage({ isrShows }: ShowsContentPageProps) {
+  const router = useRouter();
   const { data: shows, isValidating } = useSWR<Array<Show>>(
     "/api/shows",
     getShowsViaAPI,
