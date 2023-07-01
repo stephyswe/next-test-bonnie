@@ -1,12 +1,11 @@
-/* eslint-disable no-param-reassign */
-import NextAuth from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
 
 import { axiosInstance } from "@/lib/axios/axiosInstance";
+import { User } from "@/lib/features/users/types";
 import { routes } from "@/lib/axios/routes";
-import type { User } from "@/lib/features/users/types";
+import { AuthOptions } from "next-auth";
 
-export default NextAuth({
+export const authOptions: AuthOptions = {
   providers: [
     // reference: https://next-auth.js.org/configuration/providers/credentials#how-to
     CredentialsProvider({
@@ -45,7 +44,7 @@ export default NextAuth({
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: any) {
       // reference: https://next-auth.js.org/configuration/callbacks#jwt-callback
       // Persist the JWT token to the token right after signin
       if (user) {
@@ -53,8 +52,7 @@ export default NextAuth({
       }
       return token;
     },
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    async session({ session, token, user }) {
+    async session({ session, token, user }: any) {
       // reference: https://next-auth.js.org/configuration/callbacks#session-callback
       // Send properties to the client, like an access_token from a provider
 
@@ -66,4 +64,4 @@ export default NextAuth({
     },
   },
   secret: process.env.NEXTAUTH_SECRET,
-});
+};
